@@ -8,12 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>BetterJoyForCemu</RootNamespace>
     <AssemblyName>BetterJoyForCemu</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\X64\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -104,6 +105,9 @@
     </Reference>
     <Reference Include="Nefarius.ViGEm.Client, Version=1.16.150.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nefarius.ViGEm.Client.1.16.150\lib\net452\Nefarius.ViGEm.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenGL.Net, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenGL.Net.0.8.4\lib\net461\OpenGL.Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -273,6 +277,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\glfw_net\GLFW.NET\GLFW.NET.csproj">
+      <Project>{1bac2db8-f54d-4971-876f-8e2dad112a70}</Project>
+      <Name>GLFW.NET</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

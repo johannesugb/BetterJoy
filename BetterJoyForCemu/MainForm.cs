@@ -9,19 +9,47 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using GLFW;
+using OpenGL;
+using Timer = System.Windows.Forms.Timer;
 
 namespace BetterJoyForCemu {
     public partial class MainForm : Form {
-        public bool nonOriginal = Boolean.Parse(ConfigurationManager.AppSettings["NonOriginalController"]);
+        public bool nonOriginal = System.Boolean.Parse(ConfigurationManager.AppSettings["NonOriginalController"]);
         public List<Button> con, loc;
         public bool calibrate;
         public List<KeyValuePair<string, float[]>> caliData;
         private Timer countDown;
         private int count;
         public List<int> xG, yG, zG, xA, yA, zA;
+
+
+        public void DoGlfw()
+        {
+            Glfw.WindowHint(GLFW.Hint.TransparentFramebuffer, true);
+            using (var window = new GLFW.NativeWindow(800, 600, "MyWindowTitle")) {
+                
+                // Main application loop
+                while (!window.IsClosing) {
+                    // OpenGL rendering
+                    // Implement any timing for flow control, etc (see Glfw.GetTime())
+                    
+                    Gl.Viewport(0, 0, 800, 600);
+                    Gl.ClearColor(1.0f, 0.0f, 1.0f, 0.5f);
+                    Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+                    // Swap the front/back buffers
+                    window.SwapBuffers();
+
+                    // Poll native operating system events (must be called or OS will think application is hanging)
+                    Glfw.PollEvents();
+                }
+            }
+        }
 
         public MainForm() {
             xG = new List<int>(); yG = new List<int>(); zG = new List<int>();
@@ -31,6 +59,9 @@ namespace BetterJoyForCemu {
             };
 
             InitializeComponent();
+
+            Thread glfwThread = new Thread(DoGlfw);
+            glfwThread.Start();
 
             if (!nonOriginal)
                 AutoCalibrate.Hide();
@@ -48,7 +79,7 @@ namespace BetterJoyForCemu {
                 var value = ConfigurationManager.AppSettings[myConfigs[i]];
                 Control childControl;
                 if (value == "true" || value == "false") {
-                    childControl = new CheckBox() { Checked = Boolean.Parse(value), Size = childSize };
+                    childControl = new CheckBox() { Checked = System.Boolean.Parse(value), Size = childSize };
                 } else {
                     childControl = new TextBox() { Text = value, Size = childSize };
                 }
@@ -134,9 +165,9 @@ namespace BetterJoyForCemu {
             console.AppendText(value);
         }
 
-        bool toRumble = Boolean.Parse(ConfigurationManager.AppSettings["EnableRumble"]);
-        bool showAsXInput = Boolean.Parse(ConfigurationManager.AppSettings["ShowAsXInput"]);
-        bool showAsDS4 = Boolean.Parse(ConfigurationManager.AppSettings["ShowAsDS4"]);
+        bool toRumble = System.Boolean.Parse(ConfigurationManager.AppSettings["EnableRumble"]);
+        bool showAsXInput = System.Boolean.Parse(ConfigurationManager.AppSettings["ShowAsXInput"]);
+        bool showAsDS4 = System.Boolean.Parse(ConfigurationManager.AppSettings["ShowAsDS4"]);
 
         public void locBtnClick(object sender, EventArgs e) {
             Button bb = sender as Button;
